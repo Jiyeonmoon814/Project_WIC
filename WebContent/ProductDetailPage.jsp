@@ -14,12 +14,22 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
 	
+	
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	
 	<style>
-	
+	.modal-header, h4, .close {
+      background-color: #ddc5ee;
+      color:white !important;
+      text-align: center;
+      font-size: 30px;
+    }
+    .modal-footer {
+      background-color: #f9f9f9;
+    }
 	</style>
 </head>
 
@@ -106,7 +116,7 @@
 						</c:otherwise>
 					</c:choose>
 				</div>
-			</div>	
+			</div>	 
 		</div>
 		
 		<!-- Right -->
@@ -141,8 +151,12 @@
 			</div>
 			<div class="mb-2 d-flex justify-content-between">
 				<span class="prdReply">상품문의</span>
-				<button id="ask" class="btn btn-primary">문의하기</button>
+				<a id="modalBtn" href="<%= request.getContextPath()%>/Page.askProduct?prd_num=${product.prd_num}" data-toggle="modal" data-target="#myModal">
+				<input type="button" id="ask" class="btn btn-primary" value="문의하기"></a>
 			</div>
+			
+
+			
 			<div>
 				<!-- 상품문의 테이블 -->
 				<table class="table myTable">
@@ -156,17 +170,19 @@
 					<tbody>
 						<tr>
 							<td>1</td>
-							<td><a href="#">상품 문의드려요.</a></td>
+							<td><a id="comment-modal" href="#" data-toggle="modal" data-target="#myModal2">상품 문의드려요.</a></td>
 							<td>문지</td>
 						</tr>
 						<tr>
 							<td>2</td>
-							<td><a href="#">에눌 가능한가요?</a></td>
+							<td><a href="#" >에눌 가능한가요?</a></td>
 							<td>재형이</td>
 						</tr>
 					</tbody>
 				</table>
 				
+
+  
 				<!-- Pagination -->
 				<div class="">
 					<nav aria-label="Page navigation">
@@ -190,11 +206,170 @@
 			</div>
 		</div>
 	</div>
+
+	
+	 <!-- Modal for ask button 널 위한 한글이야 민찬 상품문의 용 모달 -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" style="position: absolute;">
+	<!-- Modal content-->
+      <div class="modal-content" style="min-width: 1200px; margin: 100px 180px;" >
+        <div class="modal-header" style="padding:25px 35px;">
+          <div>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4><span class="glyphicon glyphicon-lock"></span> ct_title</h4><br>
+          </div>
+        </div>
+        <div class="modal-body" style="padding:40px 50px;">
+          <form role="form">
+            <div class="form-group">
+              <label for="ch-content"><span class="glyphicon glyphicon-user"></span> title</label>
+              <input type="text" class="form-control" id="ch-content">
+            
+              <label for="comment"><span class="glyphicon glyphicon-eye-open"></span> content</label>
+              <input type="text" class="form-control" id="comment">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" class="btn-success" value="CONFIRM">
+            <input type="submit" class="btn-danger" value="CANCEL" data-dismiss="modal">
+        </div>
+      </div>
+      
+    </div>
+  </div> 
 </div>
+<!-- Modal for ask button ends  -->
+
+
+
+<!-- Modal for comment 댓글용 모달 -->
+  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog" style="position: absolute;">
+    
+      <!-- Modal content-->
+       <div class="modal-content" style="min-width: 1200px; min-height:600px; margin: 20px 180px;" >
+        <div class="modal-header" style="padding:25px 35px;">
+          <div>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4><span class="glyphicon glyphicon-lock"></span>${chatroom.ch_num}</h4>
+          </div>
+         
+        </div>
+        <div class="modal-body" style="padding:40px 50px;">
+        <div class="form-group" style="width: 50%; float: left;">
+                <label for="commentlist"><span class="glyphicon glyphicon-eye-open"></span> LIST</label>
+                <div id="commentlist">
+                  <table class="table myTable">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>MSG_NUM</th>
+                        <th>ID</th>
+                        <th>MSG_CONTENT</th>
+                        <th>MSG_DATE</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="list" items="${requestScope.commentList}">
+                     <tr id="tbodyTr">
+                     <c:choose>
+                     	<c:when test="${not empty id }">
+                
+	            		<c:if test="${id=='product.id'}">
+										<td style="background-color: #ddc5ee;">${list.msg_num}</td>
+										<td style="background-color: #ddc5ee;">${list.id}</td>
+										<td style="background-color: #ddc5ee;">${list.msg_content}</td>
+										<td style="background-color: #ddc5ee;">${list.date}</td>
+						</c:if>
+						<c:if test="${id=='admin@admin.com'}">
+										<td>${list.msg_num}</td>
+										<td>${list.id}</td>
+										<td>${list.msg_content}</td>
+										<td>${list.date}</td>
+						</c:if>
+						</c:when>
+						<c:otherwise>
+							<td>${list.msg_num}</td>
+							<td>비공개</td>
+							<td>비밀글</td>
+							<td>${list.date}</td>
+						</c:otherwise>
+						</c:choose>
+									</tr>
+								</c:forEach>
+					        </tbody>
+					    </table>
+					    
+                </div>
+              </div>
+          <form role="form">
+            <div class="form-group" style="width: 40%; float: left; margin-left: 10%;">
+              <label for="ch_content"><span class="glyphicon glyphicon-user"></span> CONTENT</label>
+              <input type="text" class="form-control" id="ch_content" value="${chatroom.content}" style="background:#eee;"readonly><br>
+              
+              <label for="comment"><span class="glyphicon glyphicon-eye-open"></span> ID</label>
+              <input type="text" class="form-control" id="id" value="${member.id}" style="background:#eee;"readonly><br>
+
+              <label for="msg_content"><span class="glyphicon glyphicon-eye-open"></span> COMMENT</label>
+              <input type="text" class="form-control" id="msg_content"><br>
+            </div>
+               </form>
+        </div>
+        <!-- Pagination -->
+				<div class="">
+					<nav aria-label="Page navigation">
+						<ul class="pagination pagination-sm justify-content-center" style="margin-bottom: 0px;">
+							<li class="page-item">
+								<a class="page-link" href="#" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
+							<li class="page-item"><a class="page-link" href="#">1</a></li>
+							<li class="page-item"><a class="page-link" href="#">2</a></li>
+							<li class="page-item"><a class="page-link" href="#">3</a></li>
+							<li class="page-item">
+								<a class="page-link" href="#" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+	
+        <div class="modal-footer">
+            <input type="submit" class="btn-success" value="CONFIRM">
+            <input type="submit" class="btn-danger" value="CANCEL" data-dismiss="modal">
+        </div>
+      </div>
+      
+    </div>
+  </div> 
+  
+
+<!-- Modal for ask button ends  -->
+
+
 <div class="mb-5"></div>
 <jsp:include page="WEB-INF/views/common/Bottom.jsp"></jsp:include>
 </body>
 
+ <script>
+    $(document).ready(function(){
+      $("#modalBtn").click(function(){
+        $("#myModal").modal();
+      });
+    });
+</script>
+
+ <script>
+    $(document).ready(function(){
+      $("#comment-modal").click(function(){
+        $("#myModal2").modal();
+      });
+    });
+    </script>
+    
+    
 <script>
 $(document).ready(function() {
 	if(!('${member.id}' == '${id}' || '${id}' == 'admin@admin.com')) {

@@ -51,6 +51,7 @@ public class MemberRegisterAction implements Action{
 		memberDto.setPwd(multi.getParameter("pwd"));
 		memberDto.setName(multi.getParameter("name"));
 		memberDto.setAddr(multi.getParameter("addr"));
+		
 		memberDto.setProfile_pic(filename);
 
 		result_closet = closetDao.createCloset();

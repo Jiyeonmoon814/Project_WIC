@@ -127,7 +127,7 @@ $(function(){
 								console.log(typeof(responsedata));	
 								console.log('>' + responsedata + '<');	
 								if(responsedata == "true"){
-									alert("사용가능한 이메일입니다.");
+									error.innerHTML("사용가능한 이메일입니다.");
 								}else if (responsedata == "false"){
 									alert("존재하는 이메일입니다.");
 								}

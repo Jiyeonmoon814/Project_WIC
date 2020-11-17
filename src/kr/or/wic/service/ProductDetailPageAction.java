@@ -9,14 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.or.wic.action.Action;
 import kr.or.wic.action.ActionForward;
-import kr.or.wic.dto.FilesDTO;
-import kr.or.wic.dto.MemberDTO;
-import kr.or.wic.dto.PriceFormat;
-import kr.or.wic.dto.ProductDTO;
 import kr.or.wic.dao.FilesDAO;
 import kr.or.wic.dao.Like_RecordDAO;
 import kr.or.wic.dao.MemberDAO;
 import kr.or.wic.dao.ProductDAO;
+import kr.or.wic.dto.FilesDTO;
+import kr.or.wic.dto.MemberDTO;
+import kr.or.wic.dto.ProductDTO;
 
 public class ProductDetailPageAction implements Action{
 
@@ -33,8 +32,8 @@ public class ProductDetailPageAction implements Action{
 		ProductDTO product = pdao.getProduct(prd_num);
 		
 		//가격 원단위 환산
-		PriceFormat format = new PriceFormat();
-		String price = format.makeCommaWon(product.getPrd_price());
+		//PriceFormat format = new PriceFormat();
+		//String price = format.makeCommaWon(product.getPrd_price());
 		
 		//해당 product에 대한 fileList 객체
 		List<FilesDTO> fileList = new ArrayList<FilesDTO>();
@@ -56,7 +55,7 @@ public class ProductDetailPageAction implements Action{
 		int checkLike = ldao.checkLike(send_id, get_id);
 		
 		request.setAttribute("product", product);
-		request.setAttribute("price", price);
+		//request.setAttribute("price", price);
 		request.setAttribute("fileList", fileList);
 		request.setAttribute("member", member);
 		request.setAttribute("getLike", getLike);

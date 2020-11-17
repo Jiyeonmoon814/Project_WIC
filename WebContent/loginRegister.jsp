@@ -42,6 +42,7 @@
                     <div class="error-text">
                         Id should be valid Email address
                     </div>
+                    
                 <div class="field">
                 <input onkeyup="checkPwd()" type="password" id="pwd" name="pwd" autocomplete="off" placeholder="Password" />
                 <div class="check-icons">
